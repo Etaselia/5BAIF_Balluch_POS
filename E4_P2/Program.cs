@@ -70,24 +70,34 @@ class LottoTipp
 {
     private readonly Random _random = new Random(906);  // Fixed Seed, erzeugt immer die selbe Sequenz an Werten.
 
+    private List<int> Tipps = new List<int>();
+
     /// <summary>
     /// Property; Gibt die Anzahl der gespeicherten Tipps zurück.
     /// </summary>
-    public int TippCount { get; } // TODO: Implementierung statt default Property.
+    public int TippCount => Tipps.Count;
 
     /// <summary>
     /// Gibt den nten gespeicherten Tipp als Array zurück. Der erste Tipp hat die Nummer 0.
     /// </summary>
-    public int[] GetTipp(int number)
-    {
-        // TODO: Implementierung    }
+    public int[] GetTipp(int number) {
+        return new[] { Tipps[number] };
     }
     /// <summary>
     /// Generiert 6 zufällige Zahlen zwischen 1 und 45 ohne Kollision.
     /// </summary>
-    private int[] GetNumbers()
-    {
-        // TODO: Implementierung
+    private int[] GetNumbers() {
+        int[] returnArray = new int[6];
+        Random random = new Random();
+        int i = 0;
+        while (returnArray.Length < 6) {
+            int numb = random.Next(1,45);
+            if (!returnArray.Contains(numb)) {
+                returnArray[i] = numb;
+                i++;
+            }
+        }
+        return returnArray;
     }
 
     /// <summary>
@@ -96,7 +106,10 @@ class LottoTipp
     /// <param name="count"></param>
     public void AddQuicktipps(int count)
     {
-        // TODO: Implementierung
+        Random random = new Random();
+        for (int i = 0; i < count; i++) {
+            Tipps.Add(random.Next(1,45));
+        }
     }
 
     /// <summary>
@@ -105,6 +118,7 @@ class LottoTipp
     /// </summary>
     public int CheckTipp(int tippNr, int[] drawnNumbers)
     {
+        
         // TODO: Implementierung
     }
 }
