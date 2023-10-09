@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-//NOT YET COMPLETED
+//Does not quite return the same value as the seed should, maybe an OS issue?
 
 {
     Console.WriteLine($"Prüfe die Tipps auf Duplikate...");
@@ -69,29 +69,30 @@ using System.Linq;
 class LottoTipp
 {
     private readonly Random _random = new Random(906);  // Fixed Seed, erzeugt immer die selbe Sequenz an Werten.
+    private List<int[]> TippsList = new List<int[]>();
 
-    private List<int> Tipps = new List<int>();
-
+    public LottoTipp() {
+        TippsList.Clear();
+        AddQuicktipps(1);
+    }
     /// <summary>
     /// Property; Gibt die Anzahl der gespeicherten Tipps zurück.
     /// </summary>
-    public int TippCount => Tipps.Count;
+    public int TippCount => TippsList.Count;
 
     /// <summary>
     /// Gibt den nten gespeicherten Tipp als Array zurück. Der erste Tipp hat die Nummer 0.
     /// </summary>
-    public int[] GetTipp(int number) {
-        return new[] { Tipps[number] };
-    }
+    public int[] GetTipp(int number) { return TippsList[number]; }
+    
     /// <summary>
     /// Generiert 6 zufällige Zahlen zwischen 1 und 45 ohne Kollision.
     /// </summary>
     private int[] GetNumbers() {
         int[] returnArray = new int[6];
-        Random random = new Random();
         int i = 0;
-        while (returnArray.Length < 6) {
-            int numb = random.Next(1,45);
+        while (i < 6) {
+            int numb = _random.Next(1,45);
             if (!returnArray.Contains(numb)) {
                 returnArray[i] = numb;
                 i++;
@@ -106,9 +107,8 @@ class LottoTipp
     /// <param name="count"></param>
     public void AddQuicktipps(int count)
     {
-        Random random = new Random();
         for (int i = 0; i < count; i++) {
-            Tipps.Add(random.Next(1,45));
+            TippsList.Add(GetNumbers());
         }
     }
 
@@ -116,9 +116,13 @@ class LottoTipp
     /// Prüft, wie viele Richtige der nte Tipp hat. Die Tippnummer beginnt bei 0
     /// (0 ist also der erste Tipp, ...).
     /// </summary>
-    public int CheckTipp(int tippNr, int[] drawnNumbers)
-    {
-        
-        // TODO: Implementierung
+    public int CheckTipp(int tippNr, int[] drawnNumbers) {
+        int returnInt = 0;
+        for (int i = 0; i < 6; i++) {
+            if (TippsList[tippNr].Contains(drawnNumbers[i])) {
+                returnInt++;
+            }
+        }
+        return returnInt;
     }
 }
