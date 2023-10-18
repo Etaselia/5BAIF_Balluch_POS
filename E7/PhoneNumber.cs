@@ -59,6 +59,20 @@ class PhoneNr : IEquatable<PhoneNr>, IComparable<PhoneNr>, IComparable
         if (ReferenceEquals(this, other)) return true;
         return Vorwahl == other.Vorwahl && Telefonnummer == other.Telefonnummer;
     }
+    
+    public bool Equals(object other) {
+        try {
+            PhoneNr otherCast = (PhoneNr) other;
+            if (ReferenceEquals(null, otherCast)) return false;
+            if (ReferenceEquals(this, otherCast)) return true;
+            return Vorwahl == otherCast.Vorwahl && Telefonnummer == otherCast.Telefonnummer;
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            return false;
+        }
+        
+    }
 
     public int CompareTo(PhoneNr other)
     {
