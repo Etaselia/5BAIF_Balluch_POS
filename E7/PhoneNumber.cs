@@ -54,7 +54,7 @@ class PhoneNr : IEquatable<PhoneNr>, IComparable<PhoneNr>, IComparable
 
     public bool Equals(PhoneNr other)
     {
-        // Note that this is somehow not returning True for a comparison on nr1.Equals((object) nr4) even though it should by all means
+    
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
         return Vorwahl == other.Vorwahl && Telefonnummer == other.Telefonnummer;
