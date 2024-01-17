@@ -106,36 +106,42 @@ namespace Grouping
             //                    +------ Date
             //                    +------ Lesson
             // *************************************************************************************
+            /*
+             SQLITE makes this pretty damn difficult, this solution does not work
             {
-                var result = db.Pupils
-                    .Where(p => p.SchoolclassId == "5AHIF") // Filter to include only pupils from 5AHIF
+                // First, get the basic pupil data
+                var pupils = db.Pupils
+                    .Where(p => p.SchoolclassId == "5AHIF")
                     .OrderBy(p => p.Id)
                     .Take(2)
-                    .Select(p => new 
-                    {
-                        p.Id,
-                        p.Firstname,
-                        p.Lastname,
-                        Exams = db.Exams
-                            .Where(e => e.SchoolclassId == p.SchoolclassId && e.SchoolclassId == p.SchoolclassId) // Get exams for each pupil
-                            .GroupBy(e => e.Subject)
-                            .Select(examGroup => new 
-                            {
-                                Subject = examGroup.Key,
-                                SubjectExams = examGroup.Select(e => new 
-                                {
-                                    Teacher = e.Teacher.Lastname, // Access the teacher's lastname
-                                    e.Date,
-                                    Lesson = e.Period.Lessons.ToList() // Access the lesson via Period
-                                }).ToList()
-                            }).ToList()
-                    })
                     .ToList();
+
+                // Then, for each pupil, fetch and process exams separately
+                var result = pupils.Select(p => new
+                {
+                    p.Id,
+                    p.Firstname,
+                    p.Lastname,
+                    Exams = db.Exams
+                        .Where(e => e.SchoolclassId == p.SchoolclassId)
+                        .ToList() // Fetch all exams for each pupil
+                        .GroupBy(e => e.Subject)
+                        .Select(examGroup => new
+                        {
+                            Subject = examGroup.Key,
+                            SubjectExams = examGroup.Select(e => new
+                            {
+                                Teacher = e.Teacher.Lastname,
+                                e.Date,
+                                Lesson = e.Period.Lessons.ToList()
+                            }).ToList()
+                        }).ToList()
+                }).ToList();
 
                 Console.WriteLine("RESULT3");
                 WriteJson(result);
             }
-
+            */
 
 
             // *************************************************************************************
@@ -147,18 +153,40 @@ namespace Grouping
             //          "stärksten" Stunden auszugeben.
             // *************************************************************************************
             {
-                List<object> result = null!;
+                var result4 = db.Lessons
+                    .AsEnumerable() // Switch to client-side processing for complex operations not supported by SQLite
+                    .GroupBy(l => new { l.Day, l.PeriodNr })
+                    .Select(g => new
+                    {
+                        Day = g.Key.Day,
+                        PeriodNr = g.Key.PeriodNr,
+                        ClassCount = g.Select(l => l.SchoolclassId).Distinct().Count()
+                    })
+                    .OrderByDescending(g => g.ClassCount)
+                    .Take(5)
+                    .ToList();
+
                 Console.WriteLine("RESULT4");
-                WriteJson(result);
+                WriteJson(result4);
+
             }
 
             // *************************************************************************************
             // ÜBUNG 5: Wie viele Klassen gibt es pro Abteilung?
             // *************************************************************************************
             {
-                List<object> result = null!;
+                var result5 = db.Schoolclasss
+                    .Select(e => e) // Extract SchoolclassId from each exam
+                    .GroupBy(sc => sc.Department) // Group by inferred department
+                    .Select(g => new
+                    {
+                        Department = g.Key,
+                        NumberOfClasses = g.Select(sc => sc).Count() // Count the number of unique SchoolclassIds per department
+                    })
+                    .ToList();
+
                 Console.WriteLine("RESULT5");
-                WriteJson(result);
+                WriteJson(result5);
             }
 
             // *************************************************************************************
@@ -168,7 +196,16 @@ namespace Grouping
             //                   und Count
             // *************************************************************************************
             {
-                List<object> result = null!;
+                var result = db.Schoolclasss
+                    .Select(e => e) // Extract SchoolclassId from each exam
+                    .GroupBy(sc => sc.Department) // Group by inferred department
+                    .Select(g => new
+                    {
+                        Department = g.Key,
+                        NumberOfClasses = g.Select(sc => sc).Count() // Count the number of unique SchoolclassIds per department
+                    })
+                    .Where(d => d.NumberOfClasses > 10)
+                    .ToList();
                 Console.WriteLine("RESULT6");
                 WriteJson(result);
             }

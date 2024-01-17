@@ -14,7 +14,7 @@ namespace LinqUebung1.Application
         private static void Main(string[] args)
         {
             using ExamsDb db = ExamsDb.FromSeed();
-            var results = JsonDocument.Parse(File.ReadAllText("/home/eta/RiderProjects/5BAIF_Balluch_POS/POS02_E2/results.json", System.Text.Encoding.UTF8)).RootElement;
+            var results = JsonDocument.Parse(File.ReadAllText("/home/eta/RiderProjects/5BAIF_Balluch_POS/POS02-E2/results.json", System.Text.Encoding.UTF8)).RootElement;
             // *************************************************************************************
             // MUSTERBEISPIELE
             // *************************************************************************************
