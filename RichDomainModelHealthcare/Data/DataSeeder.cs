@@ -8,29 +8,42 @@ public static class DataSeeder {
     public static List<Patient> GenerateFakePatients(int count) {
         var patientGenerator = new Faker<Patient>()
             .CustomInstantiator(f => new Patient(
-                new Name(
-                    f.Name.FirstName(), 
-                    f.Name.LastName()), 
-                new Address(f.Address.StreetAddress(), 
-                    f.Address.City(), 
-                    f.Address.State(), 
-                    f.Address.ZipCode()), 
+                new Name(f.Name.FirstName(), f.Name.LastName()),
+                new Address(f.Address.StreetAddress(), f.Address.City(), f.Address.State(), f.Address.ZipCode()),
                 f.Date.Past(80, DateTime.Now.AddYears(-18)),
                 f.Phone.PhoneNumber()
-                ))
-            .RuleFor(p => p.PatientId, f => Guid.NewGuid());
+            ));
 
-        return patientGenerator.Generate(count);
+        var patients = patientGenerator.Generate(count);
+        foreach (var patient in patients) {
+            patient.MedicalRecord = GenerateFakeMedicalRecord(patient);
+        }
+
+        return patients;
+    }
+
+    private static MedicalRecord GenerateFakeMedicalRecord(Patient patient) {
+        var medicalRecord = new MedicalRecord { Patient = patient };
+        // Add treatments to the medical record
+        // ...
+        return medicalRecord;
     }
 
     public static List<Clinician> GenerateFakeClinicians(int count) {
         var clinicianGenerator = new Faker<Clinician>()
-            .CustomInstantiator(f => new Clinician(new Name(f.Name.FirstName(), f.Name.LastName()), 
-                f.Random.Word()))
-            .RuleFor(c => c.ClinicianId, f => Guid.NewGuid());
+            .CustomInstantiator(f => new Clinician(
+                new Name(f.Name.FirstName(), f.Name.LastName()),
+                new Address(f.Address.StreetAddress(), f.Address.City(), f.Address.State(), f.Address.ZipCode()),
+                f.Date.Past(50, DateTime.Now.AddYears(-18)), // Example date of birth
+                f.Phone.PhoneNumber(), // Example phone number
+                f.Random.Word() // Specialty
+            ))
+            .RuleFor(c => c.Id, f => Guid.NewGuid()); // Assuming Id is the primary key
 
         return clinicianGenerator.Generate(count);
     }
+
+
 
     public static List<Appointment> GenerateFakeAppointments(List<Patient> patients, List<Clinician> clinicians, int count) {
         Console.WriteLine("Creating Appointment F");
@@ -63,7 +76,6 @@ public static class DataSeeder {
                     Cost = new Money(f.Random.Decimal(50, 500), "USD"),
                     MedicalRecord = patient.MedicalRecord
                 };
-                patient.Treatments.Add(treatment);
                 patient.MedicalRecord.AddTreatment(treatment);
                 clinician.Treatments.Add(treatment);
                 return treatment;
@@ -84,32 +96,13 @@ public static class DataSeeder {
                     TotalAmount = new Money(f.Random.Decimal(100, 1000), "USD"),
                     Treatment = treatment
                 };
-                patient.Invoices.Add(invoice);
+                patient.AddInvoice(invoice);
                 treatment.Invoices.Add(invoice);
                 return invoice;
             })
             .RuleFor(i => i.InvoiceId, f => Guid.NewGuid());
 
         return invoiceGenerator.Generate(count);
-    }
-
-    public static List<MedicalRecord> GenerateFakeMedicalRecords(List<Patient> patients) {
-        var medicalRecords = new List<MedicalRecord>();
-
-        foreach (var patient in patients) {
-            var medicalRecord = new Faker<MedicalRecord>()
-                .CustomInstantiator(f => new MedicalRecord {
-                    Patient = patient,
-                    Treatments = new List<Treatment>(), // Initially empty, treatments will be added in GenerateFakeTreatments
-                    MedicalRecordId = Guid.NewGuid()
-                })
-                .Generate(); // Generate a single MedicalRecord for each patient
-
-            patient.MedicalRecord = medicalRecord; // Associate the medical record with the patient
-            medicalRecords.Add(medicalRecord);
-        }
-
-        return medicalRecords;
     }
 
     // Extended to include the generation of Names

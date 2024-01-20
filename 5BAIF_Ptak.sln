@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS02-E4", "POS02-E4\POS02-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichDomainModelHealthcare", "RichDomainModelHealthcare\RichDomainModelHealthcare.csproj", "{98162EA0-B0ED-4A26-BB83-120354615427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichDomainModelHealthcareTest", "RichDomainModelHealthcareTest\RichDomainModelHealthcareTest.csproj", "{8EC8B138-4D18-428C-AB57-E4E106CA647E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,9 @@ Global
 		{98162EA0-B0ED-4A26-BB83-120354615427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98162EA0-B0ED-4A26-BB83-120354615427}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98162EA0-B0ED-4A26-BB83-120354615427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

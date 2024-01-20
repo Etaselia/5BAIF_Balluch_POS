@@ -47,7 +47,6 @@ namespace RichDomainModelHealthcare
                         // Generate and add appointments (make sure they have unique Ids)
                         var patients = DataSeeder.GenerateFakePatients(100);
                         var clinicians = DataSeeder.GenerateFakeClinicians(100);
-                        var medicalRecords = DataSeeder.GenerateFakeMedicalRecords(patients);
                         var appointments = DataSeeder.GenerateFakeAppointments(patients, clinicians, 100);
                         var treatments = DataSeeder.GenerateFakeTreatments(patients,clinicians, 100);
                         var invoices = DataSeeder.GenerateFakeInvoices(patients, treatments,100);
@@ -61,7 +60,6 @@ namespace RichDomainModelHealthcare
                         context.Appointments.AddRange(appointments);
                         context.Treatments.AddRange(treatments);
                         context.Invoices.AddRange(invoices);
-                        context.MedicalRecords.AddRange(medicalRecords);
 
                         context.SaveChanges();
                     }

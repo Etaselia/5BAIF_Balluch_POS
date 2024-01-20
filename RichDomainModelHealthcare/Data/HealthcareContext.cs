@@ -65,11 +65,6 @@ namespace RichDomainModelHealthcare.Data
             
             // Treatment relationships
             modelBuilder.Entity<Treatment>()
-                .HasOne(t => t.Patient)
-                .WithMany(p => p.Treatments)
-                .HasForeignKey(t => t.PatientId);
-
-            modelBuilder.Entity<Treatment>()
                 .HasOne(t => t.Clinician)
                 .WithMany(c => c.Treatments)
                 .HasForeignKey(t => t.ClinitianId);
@@ -78,6 +73,23 @@ namespace RichDomainModelHealthcare.Data
                 .HasOne(t => t.MedicalRecord)
                 .WithMany(mr => mr.Treatments)
                 .HasForeignKey(t => t.MedicalRecordId);
+            
+            // Person Relationships
+            modelBuilder.Entity<Person>()
+                .HasDiscriminator<string>("PersonType")
+                .HasValue<Patient>("Patient")
+                .HasValue<Clinician>("Clinician");
+            
+            modelBuilder.Entity<Patient>()
+                .HasMany(p => p.Appointments)
+                .WithOne(a => a.Patient) // Assuming Appointment has a Patient reference
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure MedicalRecord as an aggregate root for Treatments
+            modelBuilder.Entity<MedicalRecord>()
+                .HasMany(mr => mr.Treatments)
+                .WithOne(t => t.MedicalRecord) // Assuming Treatment has a MedicalRecord reference
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }
