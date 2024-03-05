@@ -9,8 +9,8 @@ namespace RichDomainModelHealthcare.Models {
         private List<Invoice> _invoices = new List<Invoice>();
         public MedicalRecord MedicalRecord { get; set; }
 
-        public IReadOnlyCollection<Appointment> Appointments => _appointments.AsReadOnly();
-        public IReadOnlyCollection<Invoice> Invoices => _invoices.AsReadOnly();
+        public virtual IReadOnlyCollection<Appointment> Appointments => _appointments.AsReadOnly();
+        public virtual IReadOnlyCollection<Invoice> Invoices => _invoices.AsReadOnly();
 
         public Patient() : base(null, null, default(DateTime), null) {
         }

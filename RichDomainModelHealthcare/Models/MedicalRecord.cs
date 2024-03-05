@@ -5,7 +5,7 @@ namespace RichDomainModelHealthcare.Models {
         private List<Treatment> _treatments = new List<Treatment>();
         public Guid PatientId { get; set; } // Foreign key for Patient
 
-        public IReadOnlyCollection<Treatment> Treatments => _treatments.AsReadOnly();
+        public virtual IReadOnlyCollection<Treatment> Treatments => _treatments.AsReadOnly();
 
         public MedicalRecord() { }
 

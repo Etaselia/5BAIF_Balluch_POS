@@ -3,8 +3,8 @@ using RichDomainModelHealthcare.Models.ValueObjects;
 namespace RichDomainModelHealthcare.Models {
     public class Clinician : Person {
         public string Specialty { get; set; }
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
-        public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public virtual ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
 
         public Clinician() : base(null, null, default(DateTime), null) {
         }

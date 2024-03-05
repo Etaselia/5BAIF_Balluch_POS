@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichDomainModelHealthcare",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichDomainModelHealthcareTest", "RichDomainModelHealthcareTest\RichDomainModelHealthcareTest.csproj", "{8EC8B138-4D18-428C-AB57-E4E106CA647E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS02-E5", "POS02-E5\POS02-E5.csproj", "{ECE48A18-F79A-4A65-A1C0-50884A7B5E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS02-E6", "POS02-E6\POS02-E6.csproj", "{443E148D-C606-4595-960A-DFBDBAA80554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +82,13 @@ Global
 		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EC8B138-4D18-428C-AB57-E4E106CA647E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE48A18-F79A-4A65-A1C0-50884A7B5E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE48A18-F79A-4A65-A1C0-50884A7B5E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE48A18-F79A-4A65-A1C0-50884A7B5E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE48A18-F79A-4A65-A1C0-50884A7B5E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{443E148D-C606-4595-960A-DFBDBAA80554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{443E148D-C606-4595-960A-DFBDBAA80554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{443E148D-C606-4595-960A-DFBDBAA80554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{443E148D-C606-4595-960A-DFBDBAA80554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
