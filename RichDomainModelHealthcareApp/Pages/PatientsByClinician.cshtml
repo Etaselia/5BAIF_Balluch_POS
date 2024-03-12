@@ -3,13 +3,36 @@
 
 <h1>Patients Grouped by Clinician</h1>
 
-@foreach (var group in Model.ClinicianPatientsGroups)
+@if (Model.ClinicianPatientsGroups != null && Model.ClinicianPatientsGroups.Any())
 {
-    <h2>@group.ClinicianName</h2>
-    <ul>
-        @foreach (var patientName in group.PatientNames)
-        {
-            <li>@patientName</li>
-        }
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th>Clinician Name</th>
+                <th>Patients</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var group in Model.ClinicianPatientsGroups)
+            {
+                <tr>
+                    <td>@group.ClinicianName</td>
+                    <td>
+                        <ul>
+                            @foreach (var patientName in group.PatientNames)
+                            {
+                                <li>@patientName</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No patient-clinician groupings found.</p>
 }

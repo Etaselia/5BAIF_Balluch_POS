@@ -10,7 +10,7 @@ builder.Services.AddRazorPages();
 
 // Register the DbContext
 builder.Services.AddDbContext<HealthcareContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("Data Source=HealthcareDatabase.db")));
+    options.UseSqlite("Data Source=/home/eta/RiderProjects/5BAIF_Balluch_POS/RichDomainModelHealthcare/HealthcareDatabase.db"));
 
 var app = builder.Build();
 
