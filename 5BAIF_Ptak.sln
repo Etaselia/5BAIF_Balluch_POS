@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS02-E5", "POS02-E5\POS02-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS02-E6", "POS02-E6\POS02-E6.csproj", "{443E148D-C606-4595-960A-DFBDBAA80554}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichDomainModelHealthcareApp", "RichDomainModelHealthcareApp\RichDomainModelHealthcareApp.csproj", "{5AD6FC3A-A42D-47BF-948A-D655B9962E37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,5 +92,9 @@ Global
 		{443E148D-C606-4595-960A-DFBDBAA80554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{443E148D-C606-4595-960A-DFBDBAA80554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{443E148D-C606-4595-960A-DFBDBAA80554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,15 @@
+@page
+@model PatientsByClinicianModel
+
+<h1>Patients Grouped by Clinician</h1>
+
+@foreach (var group in Model.ClinicianPatientsGroups)
+{
+    <h2>@group.ClinicianName</h2>
+    <ul>
+        @foreach (var patientName in group.PatientNames)
+        {
+            <li>@patientName</li>
+        }
+    </ul>
+}

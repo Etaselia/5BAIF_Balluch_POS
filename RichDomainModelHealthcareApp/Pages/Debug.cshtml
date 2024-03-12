@@ -1,0 +1,23 @@
+@page
+@model DebugModel
+@{
+    ViewData["Title"] = "Debug Page";
+}
+
+<h2>Debug Information</h2>
+
+<h4>Configuration Settings</h4>
+<ul>
+    @foreach (var kvp in Model.ConfigurationValues)
+    {
+        <li><strong>@kvp.Key:</strong> @kvp.Value</li>
+    }
+</ul>
+
+<h4>Database Structure</h4>
+<ul>
+    @foreach (var entityInfo in Model.EntityInformation)
+    {
+        <li>@entityInfo</li>
+    }
+</ul>
