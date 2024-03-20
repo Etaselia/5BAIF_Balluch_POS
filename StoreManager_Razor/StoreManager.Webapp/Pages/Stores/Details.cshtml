@@ -1,0 +1,30 @@
+﻿@page "{guid}"
+@model StoreManager.Webapp.Pages.Stores.DetailsModel
+
+<main>
+    <h3>Details for Store: @Model.Store.Name</h3>
+    <section>
+        <h4>Offers List</h4>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th>EAN</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Last Update</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var offer in Model.Store.Offers.OrderBy(o => o.Product.Name))
+            {
+                <tr>
+                    <td>@offer.ProductEan</td>
+                    <td>@offer.Product.Name</td>
+                    <td>@offer.Price.ToString("C")</td>
+                    <td>@offer.LastUpdate.ToString("dd.MM.yyyy HH:mm")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </section>
+</main>

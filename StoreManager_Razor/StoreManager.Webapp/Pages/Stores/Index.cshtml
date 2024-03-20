@@ -1,0 +1,35 @@
+﻿@page
+@model StoreManager.Webapp.Pages.Stores.IndexModel
+
+<main class="container">
+    <h2>Stores Overview</h2>
+    <p>
+        @Model.Stores.Count store(s) found. Data generated at @DateTime.Now.ToString("HH:mm").
+    </p>
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Offers</th>
+                <th>Close Date</th>
+                <th>URL</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var store in Model.Stores)
+            {
+                <tr class="@(store.CloseDate.HasValue ? "closed" : "")">
+                    <td>@store.Name</td>
+                    <td>@store.OffersCount</td>
+                    <td>@store.CloseDate?.ToString("d")</td>
+                    <td><a href="@store.Url" target="_blank">@store.Url</a></td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-guid="@store.Guid" class="btn btn-sm btn-primary">Edit</a>
+                        <a asp-page="./Details" asp-route-guid="@store.Guid" class="btn btn-sm btn-secondary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

@@ -1,0 +1,79 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+:root {
+  --color-background: #f0f4f8; /* Light grey-blue */
+  --color-secondary-background: #e2e8f0; /* Slightly darker shade for sections */
+  --color-text: #333333; /* High-contrast grey for readability */
+  --color-accent: #4a90e2; /* Grey-blue for links and buttons */
+  --color-border: #d1dce5; /* Soft grey for borders */
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+a, a:hover, a:focus {
+  color: var(--color-accent);
+}
+
+.table {
+  border-color: var(--color-border);
+}
+
+.form-control {
+  background-color: var(--color-secondary-background);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.form-control:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+.invalid-feedback, .text-danger {
+  color: #e3342f; /* Consider adjusting this color to fit within the grey-blue palette if it's too stark */
+}
+
+.closed {
+  background-color: var(--color-secondary-background); /* Adjust the closed store indication to align with the color scheme */
+  color: var(--color-text);
+}
+
+.table th {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.table td {
+  color: var(--color-text);
+}
+
+/* Enhance the visual differentiation of action buttons/links */
+.action-button {
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
