@@ -30,6 +30,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POS02-E6", "POS02-E6\POS02-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichDomainModelHealthcareApp", "RichDomainModelHealthcareApp\RichDomainModelHealthcareApp.csproj", "{5AD6FC3A-A42D-47BF-948A-D655B9962E37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManager.Application", "..\StoreManager_Razor\StoreManager.Application\StoreManager.Application.csproj", "{E54B1560-AC5C-4099-9CDD-C843BDBDDA60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManager.Webapp", "..\StoreManager_Razor\StoreManager.Webapp\StoreManager.Webapp.csproj", "{8819C2F9-8FCA-43F1-9AF6-F56ECB20E565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManager.Test", "..\StoreManager_Razor\StoreManager.Test\StoreManager.Test.csproj", "{B6B0AB8E-0680-44D5-BD33-E75C6887F552}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,5 +102,17 @@ Global
 		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AD6FC3A-A42D-47BF-948A-D655B9962E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E54B1560-AC5C-4099-9CDD-C843BDBDDA60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E54B1560-AC5C-4099-9CDD-C843BDBDDA60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E54B1560-AC5C-4099-9CDD-C843BDBDDA60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E54B1560-AC5C-4099-9CDD-C843BDBDDA60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8819C2F9-8FCA-43F1-9AF6-F56ECB20E565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8819C2F9-8FCA-43F1-9AF6-F56ECB20E565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8819C2F9-8FCA-43F1-9AF6-F56ECB20E565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8819C2F9-8FCA-43F1-9AF6-F56ECB20E565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B0AB8E-0680-44D5-BD33-E75C6887F552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B0AB8E-0680-44D5-BD33-E75C6887F552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B0AB8E-0680-44D5-BD33-E75C6887F552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B0AB8E-0680-44D5-BD33-E75C6887F552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
