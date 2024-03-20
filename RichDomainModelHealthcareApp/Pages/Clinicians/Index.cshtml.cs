@@ -18,6 +18,7 @@ public class PatientsByClinicianModel : PageModel
     public class ClinicianPatientsGroup
     {
         public string ClinicianName { get; set; }
+        public Guid ClinicianId { get; set; }
         public List<string> PatientNames { get; set; }
     }
 
@@ -33,6 +34,7 @@ public class PatientsByClinicianModel : PageModel
             .GroupBy(ap => ap.Clinician.Id)
             .Select(group => new ClinicianPatientsGroup
             {
+                ClinicianId = group.First().Clinician.Id,
                 ClinicianName = group.First().Clinician.Name.FirstName + " " + group.First().Clinician.Name.LastName, // Adjust according to your Name structure
                 PatientNames = group.Select(g => g.Patient.Name.FirstName + " " + g.Patient.Name.LastName).ToList() // Adjust according to your Name structure
             })

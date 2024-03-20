@@ -1,0 +1,27 @@
+@page "{id:guid}"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model RichDomainModelHealthcareApp.Pages.Clinicians.EditModel
+
+<h2>Edit Clinician</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Clinician.Id" />
+
+    <!-- Other fields for editing -->
+
+    <div class="form-group">
+        <label asp-for="Clinician.SelectedPatientId" class="control-label">Patients</label>
+        <select asp-for="Clinician.SelectedPatientId" asp-items="Model.PatientsSelectList" class="form-control">
+            <option value="">-- Select a Patient --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

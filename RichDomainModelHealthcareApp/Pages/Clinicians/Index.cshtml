@@ -11,6 +11,7 @@
             <tr>
                 <th>Clinician Name</th>
                 <th>Patients</th>
+                <th>Actions</th> <!-- Add this line -->
             </tr>
             </thead>
             <tbody>
@@ -25,6 +26,13 @@
                                 <li>@patientName</li>
                             }
                         </ul>
+                    </td>
+                    <td>
+                        <!-- Assuming the clinician has a unique identifier, e.g., ClinicianId -->
+                        <!-- Replace 'EditClinician' with your actual Edit action method name -->
+                        <!-- Replace 'ClinicianDetails' with your actual Details action method name -->
+                        <a class="btn btn-primary" href="/Clinicians/Edit/@group.ClinicianId">Edit</a>
+                        <a class="btn btn-info" href="/Clinicians/Details/@group.ClinicianId">Details</a>
                     </td>
                 </tr>
             }
