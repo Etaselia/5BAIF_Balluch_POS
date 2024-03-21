@@ -6,19 +6,25 @@
 <h2>Edit Clinician</h2>
 
 <form method="post">
-    <input type="hidden" asp-for="Clinician.Id" />
+    <input type="hidden" asp-for="AppointmentDetails.ClinicianId" />
 
     <!-- Other fields for editing -->
 
     <div class="form-group">
-        <label asp-for="Clinician.SelectedPatientId" class="control-label">Patients</label>
-        <select asp-for="Clinician.SelectedPatientId" asp-items="Model.PatientsSelectList" class="form-control">
+        <label asp-for="AppointmentDetails.SelectedPatientId" class="control-label">Patients</label>
+        <select asp-for="AppointmentDetails.SelectedPatientId" asp-items="Model.PatientsSelectList" class="form-control">
             <option value="">-- Select a Patient --</option>
         </select>
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
+        <label asp-for="AppointmentDetails.Reason" class="control-label">Reason for Appointment</label>
+        <textarea asp-for="AppointmentDetails.Reason" class="form-control"></textarea>
+        <span asp-validation-for="AppointmentDetails.Reason" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Add Appointment" class="btn btn-primary" />
     </div>
 </form>
 

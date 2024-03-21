@@ -9,6 +9,10 @@ namespace RichDomainModelHealthcare.Models.ValueObjects {
             LastName = lastName;
         }
 
+        public override string ToString() {
+            return $"{FirstName} {LastName}";
+        }
+
         // Override ToString, Equals, and GetHashCode as needed
     }
 }
