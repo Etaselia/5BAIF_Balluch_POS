@@ -1,33 +1,162 @@
-@page "{id:guid}"
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-
+@page
 @model RichDomainModelHealthcareApp.Pages.Clinicians.EditModel
+@{
+ViewData["Title"] = "Edit Clinician";
+}
 
-<h2>Edit Clinician</h2>
+<h1>Edit Clinician</h1>
 
-<form method="post">
-    <input type="hidden" asp-for="AppointmentDetails.ClinicianId" />
-
-    <!-- Other fields for editing -->
-
-    <div class="form-group">
-        <label asp-for="AppointmentDetails.SelectedPatientId" class="control-label">Patients</label>
-        <select asp-for="AppointmentDetails.SelectedPatientId" asp-items="Model.PatientsSelectList" class="form-control">
-            <option value="">-- Select a Patient --</option>
-        </select>
+@if (Model.Clinician != null)
+{
+<form method="post" asp-page-handler="SaveClinician" id="clinicianForm">
+    <input type="hidden" asp-for="Clinician.Id" />
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Clinician.Name.FirstName" class="control-label"></label>
+                <input asp-for="Clinician.Name.FirstName" class="form-control" />
+                <span asp-validation-for="Clinician.Name.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clinician.Name.LastName" class="control-label"></label>
+                <input asp-for="Clinician.Name.LastName" class="form-control" />
+                <span asp-validation-for="Clinician.Name.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clinician.Specialty" class="control-label"></label>
+                <input asp-for="Clinician.Specialty" class="form-control" />
+                <span asp-validation-for="Clinician.Specialty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clinician.PhoneNumber" class="control-label"></label>
+                <input asp-for="Clinician.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Clinician.PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Clinician.Address.Street" class="control-label"></label>
+                <input asp-for="Clinician.Address.Street" class="form-control" />
+                <span asp-validation-for="Clinician.Address.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clinician.Address.City" class="control-label"></label>
+                <input asp-for="Clinician.Address.City" class="form-control" />
+                <span asp-validation-for="Clinician.Address.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clinician.Address.State" class="control-label"></label>
+                <input asp-for="Clinician.Address.State" class="form-control" />
+                <span asp-validation-for="Clinician.Address.State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clinician.Address.ZipCode" class="control-label"></label>
+                <input asp-for="Clinician.Address.ZipCode" class="form-control" />
+                <span asp-validation-for="Clinician.Address.ZipCode" class="text-danger"></span>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="AppointmentDetails.Reason" class="control-label">Reason for Appointment</label>
-        <textarea asp-for="AppointmentDetails.Reason" class="form-control"></textarea>
-        <span asp-validation-for="AppointmentDetails.Reason" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <input type="submit" value="Add Appointment" class="btn btn-primary" />
-    </div>
+    <button type="submit" class="btn btn-primary">Save Clinician Details</button>
 </form>
+}
+else
+{
+<p>Clinician details not found.</p>
+}
+
+<h3>Assign Patients</h3>
+@if (Model.PatientsSelectList != null)
+{
+<form method="post" asp-page-handler="AddPatient" id="patientForm">
+    <input type="hidden" asp-for="Clinician.Id" id="clinicianId" />
+    <div class="form-group">
+        <label for="selectedPatient">Select Patient to Assign</label>
+        <select id="selectedPatient" asp-for="SelectedPatientId" class="form-control" asp-items="Model.PatientsSelectList"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Reason" class="control-label"></label>
+        <input asp-for="Reason" class="form-control" id="reason" />
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-secondary">Assign Patient</button>
+</form>
+}
+else
+{
+<p>No patients available to assign.</p>
+}
+
+<h3>Assigned Patients</h3>
+@if (Model.AssignedPatients != null && Model.AssignedPatients.Count > 0)
+{
+<table class="table">
+    <thead>
+    <tr>
+        <th>Patient Name</th>
+        <th>Reason for Visit</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var appointment in Model.AssignedPatients)
+    {
+    <tr>
+        <td>@appointment.PatientName</td>
+        <td>@appointment.ReasonForVisit</td>
+        <td>
+            <form method="post" asp-page-handler="DeletePatient" asp-route-appointmentId="@appointment.AppointmentId" asp-route-clinicianId="@Model.Clinician.Id" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>
+}
+else
+{
+<p>No patients assigned.</p>
+}
+
+<a asp-page="/Clinicians/Index" class="btn btn-secondary">Back to List</a>
+
+<!-- Modal for error messages -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="errorList">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                    <li>@Model.ErrorMessage</li>
+                    }
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                    <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function () {
+        if ($('#errorList li').length > 0) {
+            $('#errorModal').modal('show');
+        }
+    });
+</script>
 }

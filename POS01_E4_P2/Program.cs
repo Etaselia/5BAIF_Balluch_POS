@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using E4_P2;
 
 //Does not quite return the same value as the seed should, maybe an OS issue?
 
@@ -66,63 +63,66 @@ using System.Linq;
 }
 
 // TODO: Implementiere die Klasse. Füge notwendige Properties und interne Listen hinzu.
-class LottoTipp
+namespace E4_P2
 {
-    private readonly Random _random = new Random(906);  // Fixed Seed, erzeugt immer die selbe Sequenz an Werten.
-    private List<int[]> TippsList = new List<int[]>();
-
-    public LottoTipp() {
-        TippsList.Clear();
-        AddQuicktipps(1);
-    }
-    /// <summary>
-    /// Property; Gibt die Anzahl der gespeicherten Tipps zurück.
-    /// </summary>
-    public int TippCount => TippsList.Count;
-
-    /// <summary>
-    /// Gibt den nten gespeicherten Tipp als Array zurück. Der erste Tipp hat die Nummer 0.
-    /// </summary>
-    public int[] GetTipp(int number) { return TippsList[number]; }
-    
-    /// <summary>
-    /// Generiert 6 zufällige Zahlen zwischen 1 und 45 ohne Kollision.
-    /// </summary>
-    private int[] GetNumbers() {
-        int[] returnArray = new int[6];
-        int i = 0;
-        while (i < 6) {
-            int numb = _random.Next(1,45);
-            if (!returnArray.Contains(numb)) {
-                returnArray[i] = numb;
-                i++;
-            }
-        }
-        return returnArray;
-    }
-
-    /// <summary>
-    /// Fügt die in count übergebene Anzahl an Tipps zur internen Tippliste hinzu.
-    /// </summary>
-    /// <param name="count"></param>
-    public void AddQuicktipps(int count)
+    class LottoTipp
     {
-        for (int i = 0; i < count; i++) {
-            TippsList.Add(GetNumbers());
-        }
-    }
+        private readonly Random _random = new Random(906);  // Fixed Seed, erzeugt immer die selbe Sequenz an Werten.
+        private List<int[]> TippsList = new List<int[]>();
 
-    /// <summary>
-    /// Prüft, wie viele Richtige der nte Tipp hat. Die Tippnummer beginnt bei 0
-    /// (0 ist also der erste Tipp, ...).
-    /// </summary>
-    public int CheckTipp(int tippNr, int[] drawnNumbers) {
-        int returnInt = 0;
-        for (int i = 0; i < 6; i++) {
-            if (TippsList[tippNr].Contains(drawnNumbers[i])) {
-                returnInt++;
+        public LottoTipp() {
+            TippsList.Clear();
+            AddQuicktipps(1);
+        }
+        /// <summary>
+        /// Property; Gibt die Anzahl der gespeicherten Tipps zurück.
+        /// </summary>
+        public int TippCount => TippsList.Count;
+
+        /// <summary>
+        /// Gibt den nten gespeicherten Tipp als Array zurück. Der erste Tipp hat die Nummer 0.
+        /// </summary>
+        public int[] GetTipp(int number) { return TippsList[number]; }
+    
+        /// <summary>
+        /// Generiert 6 zufällige Zahlen zwischen 1 und 45 ohne Kollision.
+        /// </summary>
+        private int[] GetNumbers() {
+            int[] returnArray = new int[6];
+            int i = 0;
+            while (i < 6) {
+                int numb = _random.Next(1,45);
+                if (!returnArray.Contains(numb)) {
+                    returnArray[i] = numb;
+                    i++;
+                }
+            }
+            return returnArray;
+        }
+
+        /// <summary>
+        /// Fügt die in count übergebene Anzahl an Tipps zur internen Tippliste hinzu.
+        /// </summary>
+        /// <param name="count"></param>
+        public void AddQuicktipps(int count)
+        {
+            for (int i = 0; i < count; i++) {
+                TippsList.Add(GetNumbers());
             }
         }
-        return returnInt;
+
+        /// <summary>
+        /// Prüft, wie viele Richtige der nte Tipp hat. Die Tippnummer beginnt bei 0
+        /// (0 ist also der erste Tipp, ...).
+        /// </summary>
+        public int CheckTipp(int tippNr, int[] drawnNumbers) {
+            int returnInt = 0;
+            for (int i = 0; i < 6; i++) {
+                if (TippsList[tippNr].Contains(drawnNumbers[i])) {
+                    returnInt++;
+                }
+            }
+            return returnInt;
+        }
     }
 }

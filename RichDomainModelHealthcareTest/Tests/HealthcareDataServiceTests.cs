@@ -1,10 +1,11 @@
-using Xunit;
-using RichDomainModelHealthcare.Data;
-using RichDomainModelHealthcare.Services;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using RichDomainModelHealthcare.Models;
+using Microsoft.EntityFrameworkCore;
+using RichDomainModelHealthcare.Data;
+using RichDomainModelHealthcare.Services;
+using Xunit;
+
+namespace RichDomainModelHealthcareTest.Tests;
 
 public class HealthcareDataServiceTests {
     private HealthcareContext GetMockContext() {

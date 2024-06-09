@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿
 
 /// <summary>
 /// Füge mit
@@ -11,7 +6,7 @@ using System.Threading.Tasks;
 ///     using static TestHelpers.ProgramChecker;
 /// die Extension- und Helper Methoden zur Datei Program.cs hinzu.
 /// </summary>
-namespace TestHelpers
+namespace _02LinQE1
 {
     /// <summary>
     /// Erweitert die Typeklasse fürdie Prüfung der Implementierung einer Klasse

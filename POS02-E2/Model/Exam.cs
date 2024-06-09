@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LinqUebung1.Application.Model
+﻿namespace _02LinQE1.Model
 {
     /// <summary>
     /// Speichert eine Prüfung eines Schülers.

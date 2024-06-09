@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using LinqUebung1.Application.Model;
-using TestHelpers;
-using static TestHelpers.ProgramChecker;
+﻿using _02LinQE1.Model;
+using static _02LinQE1.ProgramChecker;
 
-namespace LinqUebung1.Application
+namespace _02LinQE1
 {
     internal class Program
     {

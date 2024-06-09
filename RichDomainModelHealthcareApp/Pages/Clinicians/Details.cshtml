@@ -1,33 +1,68 @@
-@page "{id:guid}"
+@page
 @model RichDomainModelHealthcareApp.Pages.Clinicians.ClinicianDetailsModel
+@{
+ViewData["Title"] = "Clinician Details";
+}
 
-<h2>Clinician Details</h2>
+<h1>Clinician Details</h1>
 
-@if (Model.Clinician.Id == null)
+@if (Model.Clinician != null)
 {
-    <p>Clinician not found.</p>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h2>@Model.Clinician.Name.FirstName @Model.Clinician.Name.LastName</h2>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h4>Address</h4>
+        <p>
+            @Model.Clinician.Address.Street<br />
+            @Model.Clinician.Address.City, @Model.Clinician.Address.State<br />
+            @Model.Clinician.Address.ZipCode
+        </p>
+    </div>
+    <div class="col-md-6">
+        <h4>Contact</h4>
+        <p>
+            Phone: @Model.Clinician.PhoneNumber<br />
+        </p>
+    </div>
+</div>
+
+<h3>Assigned Patients</h3>
+@if (Model.PatientAppointments != null && Model.PatientAppointments.Count > 0)
+{
+<table class="table">
+    <thead>
+    <tr>
+        <th>Patient Name</th>
+        <th>Reason for Visit</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var patient in Model.PatientAppointments)
+    {
+    <tr>
+        <td>@patient.PatientName</td>
+        <td>@patient.ReasonForVisit</td>
+    </tr>
+    }
+    </tbody>
+</table>
 }
 else
 {
-    <dl class="row">
-        <dt class="col-sm-2">ID</dt>
-        <dd class="col-sm-10">@Model.Clinician.Id</dd>
-        
-        <dt class="col-sm-2">Name</dt>
-        <dd class="col-sm-10">@Model.Clinician.Name.FirstName @Model.Clinician.Name.LastName</dd>
-        
-        <dt class="col-sm-2">Address</dt>
-        <dd class="col-sm-10">
-            @Model.Clinician.Address.Street, 
-            @Model.Clinician.Address.City, 
-            @Model.Clinician.Address.State, 
-            @Model.Clinician.Address.ZipCode
-        </dd>
-        
-        <dt class="col-sm-2">Date of Birth</dt>
-        <dd class="col-sm-10">@Model.Clinician.DateOfBirth.ToString("yyyy-MM-dd")</dd>
-        
-        <dt class="col-sm-2">Phone Number</dt>
-        <dd class="col-sm-10">@Model.Clinician.PhoneNumber</dd>
-    </dl>
+<p>No patients assigned.</p>
 }
+}
+else
+{
+<p>Clinician not found.</p>
+}
+
+<p>
+    <a asp-page="/Clinicians/Edit" asp-route-id="@Model.Clinician.Id">Edit</a> |
+    <a asp-page="/Clinicians/Index">Back to List</a>
+</p>

@@ -1,0 +1,67 @@
+@page
+@model RichDomainModelHealthcareApp.Pages.Clinicians.MassRemovePatientModel
+@{
+    ViewData["Title"] = "Mass Remove Patient";
+}
+
+<h1>Mass Remove Patient</h1>
+
+<form method="post" id="massRemoveForm">
+    <div class="form-group">
+        <label for="selectedPatient">Select Patient to Remove</label>
+        <select id="selectedPatient" asp-for="SelectedPatientId" class="form-control" asp-items="Model.PatientsSelectList"></select>
+    </div>
+    <button type="button" class="btn btn-danger" id="confirmButton">Remove Patient from All Clinicians</button>
+</form>
+
+<!-- Modal for confirmation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm Removal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this patient from <span id="clinicianCount"></span> clinicians?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmRemoveButton">Yes, Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function () {
+        $('#confirmButton').on('click', function () {
+            var selectedPatientId = $('#selectedPatient').val();
+            if (selectedPatientId) {
+                $.ajax({
+                    url: '/Clinicians/GetClinicianCountForPatient',
+                    type: 'GET',
+                    data: { patientId: selectedPatientId },
+                    success: function (response) {
+                        $('#clinicianCount').text(response.clinicianCount);
+                        $('#confirmModal').modal('show');
+                    },
+                    error: function (xhr) {
+                        alert('An error occurred while fetching clinician count.');
+                    }
+                });
+            } else {
+                alert('Please select a patient to remove.');
+            }
+        });
+
+        $('#confirmRemoveButton').on('click', function () {
+            $('#massRemoveForm').submit();
+        });
+    });
+</script>
+}

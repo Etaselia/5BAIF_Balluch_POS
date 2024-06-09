@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +10,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/RichDomainModelHealthcareApp.styles.css" asp-append-version="true"/>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .container-flex {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -30,21 +44,34 @@
                         <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                    <li class="nav-item">
+                        <form method="post" asp-page="/Account/Logout" class="form-inline">
+                            <button type="submit" class="btn btn-link nav-link text-dark" style="cursor:pointer;">Logout (@UserManager.GetUserName(User))</button>
+                        </form>
+                    </li>
+                    }
+                    else
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Account/Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Account/Register">Register</a>
+                    </li>
+                    }
+                </ul>
             </div>
         </div>
     </nav>
 </header>
-<div class="container">
+<div class="container container-flex">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
-
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2024 - RichDomainModelHealthcareApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
-    </div>
-</footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

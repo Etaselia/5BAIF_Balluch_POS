@@ -1,47 +1,94 @@
 @page
-@model PatientsByClinicianModel
-
-<h1>Patients Grouped by Clinician</h1>
-
-@if (Model.ClinicianPatientsGroups != null && Model.ClinicianPatientsGroups.Any())
-{
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="thead-light">
-            <tr>
-                <th>Clinician Name</th>
-                <th>Patients</th>
-                <th>Actions</th> <!-- Add this line -->
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var group in Model.ClinicianPatientsGroups)
-            {
-                <tr>
-                    <td>@group.ClinicianName</td>
-                    <td>
-                        <ul>
-                            @foreach (var patientName in group.PatientNames)
-                            {
-                                <li>@patientName</li>
-                            }
-                        </ul>
-                    </td>
-                    <td>
-                        <!-- Assuming the clinician has a unique identifier, e.g., ClinicianId -->
-                        <!-- Replace 'EditClinician' with your actual Edit action method name -->
-                        <!-- Replace 'ClinicianDetails' with your actual Details action method name -->
-                        <a class="btn btn-primary" href="/Clinicians/Edit/@group.ClinicianId">Edit</a>
-                        <a class="btn btn-info" href="/Clinicians/Details/@group.ClinicianId">Details</a>
-                        <a class="btn btn-primary" href="/Clinicians/MassEdit">Mass Edit - Assign Patient</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
+@model RichDomainModelHealthcareApp.Pages.Clinicians.PatientsByClinicianModel
+@{
+ViewData["Title"] = "Clinicians and Patients";
 }
-else
-{
-    <p>No patient-clinician groupings found.</p>
+
+<h1>Clinicians and Patients</h1>
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+    <a href="/Clinicians/Create" class="btn btn-primary">Create New Clinician</a>
+    <a href="/Clinicians/MassRemovePatient" class="btn btn-danger">Mass Remove Patient</a>
+    }
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Clinician Name</th>
+        <th>Number of Patients</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var group in Model.ClinicianPatientsGroups)
+    {
+    <tr>
+        <td>@group.ClinicianName</td>
+        <td class="@Model.GetPatientCountClass(@group.PatientCount)">@group.PatientCount</td>
+        <td>
+            <a asp-page="/Clinicians/Details" asp-route-id="@group.ClinicianId">Details</a>
+            @if (User.IsInRole("Admin"))
+            {
+            <span> | </span>
+            <a asp-page="/Clinicians/Edit" asp-route-id="@group.ClinicianId">Edit</a>
+            <span> | </span>
+            <form method="post" class="d-inline delete-clinician-form" asp-page-handler="DeleteClinician">
+                <input type="hidden" name="ClinicianId" value="@group.ClinicianId" />
+                <button type="button" class="btn btn-danger btn-sm delete-button" data-name="@group.ClinicianName">Delete</button>
+            </form>
+            }
+        </td>
+    </tr>
+    }
+    @foreach (var clinician in Model.AllClinicians.Where(c => !Model.ClinicianPatientsGroups.Any(g => g.ClinicianId == c.Id)))
+    {
+    <tr>
+        <td>@clinician.Name.FirstName @clinician.Name.LastName</td>
+        <td class="patient-count-green">0</td>
+        <td>
+            <a asp-page="/Clinicians/Details" asp-route-id="@clinician.Id">Details</a>
+            @if (User.IsInRole("Admin"))
+            {
+            <span> | </span>
+            <a asp-page="/Clinicians/Edit" asp-route-id="@clinician.Id">Edit</a>
+            <span> | </span>
+            <form method="post" class="d-inline delete-clinician-form" asp-page-handler="DeleteClinician">
+                <input type="hidden" name="ClinicianId" value="@clinician.Id" />
+                <button type="button" class="btn btn-danger btn-sm delete-button" data-name="@clinician.Name.FirstName @clinician.Name.LastName">Delete</button>
+            </form>
+            }
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function () {
+        $('.delete-button').on('click', function () {
+            var clinicianName = $(this).data('name');
+            var form = $(this).closest('form');
+
+            if (confirm('Are you sure you want to delete clinician ' + clinicianName + '?')) {
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function () {
+                        alert('Clinician ' + clinicianName + ' has been deleted.');
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        alert('An error occurred while deleting the clinician.');
+                    }
+                });
+            }
+        });
+    });
+</script>
 }

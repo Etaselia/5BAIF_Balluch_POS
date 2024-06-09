@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.InMemory;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LinqUebung1.Application.Model
+﻿namespace _02LinQE1.Model
 {
     internal class ExamsDb : DbContext
     {

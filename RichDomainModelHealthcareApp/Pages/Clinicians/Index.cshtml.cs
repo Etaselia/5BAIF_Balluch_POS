@@ -1,43 +1,140 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using RichDomainModelHealthcare.Data; // Use the correct namespace
+using Microsoft.Extensions.Logging;
+using RichDomainModelHealthcare.Data;
+using RichDomainModelHealthcare.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class PatientsByClinicianModel : PageModel
+namespace RichDomainModelHealthcareApp.Pages.Clinicians
 {
-    private readonly HealthcareContext _context;
-
-    public PatientsByClinicianModel(HealthcareContext context)
+    public class PatientsByClinicianModel : PageModel
     {
-        _context = context;
-    }
+        private readonly HealthcareContext _context;
+        private readonly ILogger<PatientsByClinicianModel> _logger;
 
-    // Define a ViewModel to represent each group of patients for a clinician
-    public class ClinicianPatientsGroup
-    {
-        public string ClinicianName { get; set; }
-        public Guid ClinicianId { get; set; }
-        public List<string> PatientNames { get; set; }
-    }
+        public PatientsByClinicianModel(HealthcareContext context, ILogger<PatientsByClinicianModel> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
 
-    public IList<ClinicianPatientsGroup> ClinicianPatientsGroups { get; set; }
+        public class ClinicianPatientsGroup
+        {
+            public string ClinicianName { get; set; }
+            public Guid ClinicianId { get; set; }
+            public int PatientCount { get; set; } // Changed from List<string> to int
+        }
 
-    public async Task OnGetAsync()
-    {
-        ClinicianPatientsGroups = await _context.Appointments
-            .Include(a => a.Patient)
-            .Include(a => a.Clinician)
-            // Optional: Include additional navigation properties if needed
-            .Select(a => new { a.Clinician, a.Patient })
-            .GroupBy(ap => ap.Clinician.Id)
-            .Select(group => new ClinicianPatientsGroup
+
+        public IList<ClinicianPatientsGroup> ClinicianPatientsGroups { get; set; } = new List<ClinicianPatientsGroup>();
+        public IList<Clinician> AllClinicians { get; set; } = new List<Clinician>();
+
+        public async Task OnGetAsync()
+        {
+            try
             {
-                ClinicianId = group.First().Clinician.Id,
-                ClinicianName = group.First().Clinician.Name.FirstName + " " + group.First().Clinician.Name.LastName, // Adjust according to your Name structure
-                PatientNames = group.Select(g => g.Patient.Name.FirstName + " " + g.Patient.Name.LastName).ToList() // Adjust according to your Name structure
-            })
-            .ToListAsync();
+                _logger.LogInformation("Fetching clinician and patient data.");
+
+                // Optimized query to fetch clinician and patient counts
+                ClinicianPatientsGroups = await _context.Clinicians
+                    .Select(c => new ClinicianPatientsGroup
+                    {
+                        ClinicianId = c.Id,
+                        ClinicianName = c.Name.FirstName + " " + c.Name.LastName,
+                        PatientCount = _context.Appointments.Count(a => a.ClinicianId == c.Id)
+                    })
+                    .ToListAsync();
+
+                AllClinicians = await _context.Clinicians
+                    .Include(c => c.Name)
+                    .ToListAsync();
+
+                _logger.LogInformation("Successfully fetched clinician and patient data.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching clinician and patient data.");
+            }
+        }
+
+
+        public async Task<IActionResult> OnPostDeleteClinicianAsync(Guid clinicianId)
+        {
+            try
+            {
+                _logger.LogInformation("Attempting to delete clinician with ID: {ClinicianId}", clinicianId);
+
+                var clinician = await _context.Clinicians
+                    .Include(c => c.Appointments)
+                    .FirstOrDefaultAsync(c => c.Id == clinicianId);
+
+                if (clinician != null)
+                {
+                    _context.Appointments.RemoveRange(clinician.Appointments);
+                    _context.Clinicians.Remove(clinician);
+                    await _context.SaveChangesAsync();
+
+                    _logger.LogInformation("Successfully deleted clinician with ID: {ClinicianId}", clinicianId);
+                }
+                else
+                {
+                    _logger.LogWarning("Clinician with ID: {ClinicianId} not found.", clinicianId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting clinician with ID: {ClinicianId}", clinicianId);
+                return StatusCode(500, "An error occurred while deleting the clinician.");
+            }
+
+            return new JsonResult(new { success = true });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> OnPostMassRemovePatientAsync(string patientName)
+        {
+            try
+            {
+                _logger.LogInformation("Attempting to mass remove patient: {PatientName}", patientName);
+
+                var patient = await _context.Patients
+                    .Include(p => p.Name)
+                    .FirstOrDefaultAsync(p => (p.Name.FirstName + " " + p.Name.LastName) == patientName);
+
+                if (patient == null)
+                {
+                    _logger.LogWarning("Patient {PatientName} not found.", patientName);
+                    return NotFound(new { success = false, message = "Patient not found." });
+                }
+
+                var appointments = await _context.Appointments
+                    .Where(a => a.PatientId == patient.Id)
+                    .ToListAsync();
+
+                _context.Appointments.RemoveRange(appointments);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Successfully removed patient {PatientName} from all clinicians.", patientName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while mass removing patient {PatientName}.", patientName);
+                return StatusCode(500, "An error occurred while removing the patient.");
+            }
+
+            return new JsonResult(new { success = true });
+        }
+
+        public string GetPatientCountClass(int count)
+        {
+            if (count <= 1) return "patient-count-green";
+            if (count <= 3) return "patient-count-orange";
+            return "patient-count-red";
+        }
     }
 }

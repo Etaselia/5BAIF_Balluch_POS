@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TypesDemo.Application
+﻿namespace E_Types_PTA_230927
 {
     class TypeExercise
     {
